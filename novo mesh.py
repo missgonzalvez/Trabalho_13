@@ -29,7 +29,7 @@ def Triangle ( s1, s2, s3 ) :
 def Quadrangle ( s1, s2, s3, s4 ) :
     return Polygon ( [ s1, s2, s3, s4 ] )
 
-def draw_ps ( list_of_cells, filename ) :
+'''def draw_ps ( list_of_cells, filename ) :
     f = open ( filename, 'w' )
     list_of_seg = []
     nb_of_bdry_seg = 0
@@ -81,8 +81,14 @@ def draw_ps ( list_of_cells, filename ) :
     print ( "grestore", file=f )
     print ( "showpage", file=f )
     print ( "%%Trailer", file=f )
-    print ( "%EOF", file=f )
+    print ( "%EOF", file=f )'''
 
+from random import sample
+L=sample(range(80,100),10)
+print(L)
+print(sorted(L))
+
+import numpy as np
 
 A = Vertex ( [0.,0.,0.] )
 B = Vertex ( [2.,4.,0.] )
@@ -101,20 +107,32 @@ DA = Segment ( D, A )
 ABC = Triangle ( AB, BC, CA )
 ACD = Triangle ( AC, CD, DA )
 
-print(vertice)
+#print(vertice)
 
-print(BC.base.coords)
+#print(BC.base.coords)
 
 #print(ABC.bdry.coords)
 
-for i in len(ABC):
-    print(i)
+'''rng = np.random.default_rng()
+nb_vertices = rng.integers(1, len(lista_vertices), size=3) #esta repite los números
+print(nb_vertices)'''
+
+nb_vertices1 = [sample(range(1, len(lista_vertices)), 3)]
+print (nb_vertices1)
+
+lista_seg = [AB.base.coords,BC.base.coords,CA.base.coords, AC.base.coords, CD.base.coords,DA.base.coords]
+        
+lista_triangulos=np.array_split(lista_seg,len(lista_seg)/3)
+#print(lista_triangulos[1])
+        
+
 
 #AB, BC, CA = 12 23 31
 
 
 #4. Exportar para ficheiro.
 nb_nodes=len(lista_vertices) #Calcular número de pontos da malha.
+nb_elements = len(lista_triangulos)
 #nb_elements=len(mesh) #Calcular o número de elementos da malha.
 file=open("mesh.dat","w")
 
@@ -126,11 +144,18 @@ for i,lista in enumerate(lista_vertices,start=1): #Enumerate permite enumerar ca
     file.write("{} {} {} {}\n".format(i,lista[0],lista[1],lista[2]))
 file.write("{}\n".format("$EndNodes"))
 
-#file.write("{}\n".format("\n$Elements"))
-#file.write("{}\n".format(nb_elements))
-#for j,element in enumerate(mesh):
-#    file.write("{} {} {} {}\n".format(j,element[0],element[1],element[2]))
-#file.write("{}\n".format("$EndElements"))
+file.write("{}\n".format("\n$Elements"))
+file.write("{}\n".format(nb_elements))
+for j,element in enumerate(nb_vertices1, start=1):
+    file.write("{} {} {} {}\n".format(j,element[0],element[1],element[2]))
+file.write("{}\n".format("$EndElements"))
+
+#Esto hace lo que queremos, pero no soy capaz de imprimirlo bien el fichero
+#Solo me sale una linea :(
+'''for i, vertices in enumerate( range(len(lista_triangulos)), start=1):
+    vertices = [sample(range(1, len(lista_vertices)), 3)]
+    print(i,vertices)'''
+
 
 file.close()
 

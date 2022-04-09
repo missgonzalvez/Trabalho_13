@@ -1,0 +1,52 @@
+
+# classes (objectos que podem conter informacao mais complexa)
+
+#  uma classe para implementar um ponto no plano ou no espaco
+#  outra classe para implementar um segmento
+#  outra classe para implementar um triangulo
+
+# introduzimos construtores :
+
+class Vertex :
+    def __init__ ( self, co ) :
+        # declarado com dois argumentos
+        # estranhamente, usado com apenas um argumento
+        self .coords = co
+
+class Segment :
+    def __init__ ( self, V, W ) :
+        # declarado com tres argumentos
+        # estranhamente, usado com apenas dois argumentos
+        self .base = V
+        self .tip  = W
+
+class Polygon :
+    def __init__ ( self, bd ) :
+        # usando "assert", confirmar que a ponta de cada
+        # segmento coincide com a base do proximo
+        self .bdry = bd  # lista de segmentos
+
+def Triangle ( s1, s2, s3 ) :
+    return Polygon ( [ s1, s2, s3 ] )
+
+def Quadrangle ( s1, s2, s3, s4 ) :
+    return Polygon ( [ s1, s2, s3, s4 ] )
+
+O = Vertex ( [0.,0.] )  #  self == O, co == [0.,0.]
+print ( O .coords )
+
+A = Vertex ([1.,0.])    #  self == A, co == [1.,0.]
+B = Vertex ([1.,1.])    #  self == B, co == [1.,1.]
+C = Vertex ([0.,1.])
+
+OA = Segment (O,A)
+AB = Segment (A,B)
+OB = Segment (O,B)
+BO = Segment (B,O)
+BC = Segment (B,C)
+CO = Segment (C,O)
+
+tri1 = Triangle ( OA, AB, BO )
+tri2 = Triangle ( BC, CO, OB )
+
+export_msh ( [ tri1, tri2 ], "dois-triangulos.msh")
